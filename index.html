@@ -62,7 +62,7 @@
                         <a class="page-scroll" href="#hypothesis">Hypothesis</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="methodology">Methodology</a>
+                        <a class="page-scroll" href="#methodology">Methodology</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#conclusion">Conclusion</a>
@@ -145,7 +145,7 @@
     <section id="methodology" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <h2>Hypothesis</h2>
+                <h2>Methodology</h2>
                     <p>In thanks to the same attributes being present across all of the files, merging the files is also a trivial process.  In Windows, the command line shell allows for a simple argument of “[directory] copy *.csv mergedFileName.csv” (AnalystCave.com).  A Python script would require a File I/O function which itself would still be trivial (fout, for loop, write).</p>
                     <p>We have over 22,500 data sets gathered from Betfair, with an average of 120 rows of data per set.  The datasets offered by Betfair gives us two minor hurdles.  Their horseracing data mixes in their dog racing data.  Fortunately, greyhound race results are aptly named ‘greyhound’ as part of their filename and can easily be sorted out. The second issue comes in the form of poorly kept records; some races do not have betting data included.  Without the starting wagers, we do not have a way in which to calculate odds and favors.  Some datasets also exclude the list of winners and losers, which also hinders us from calculating final payouts based on wins.  Therefore, whenever we complete our data analysis in R, we will need to exclude entire ‘Event ID’ sets that do not have either a complete set of betting data or winners.</p>
                     <p>In order to answer our hypotheses regarding an overall favored horse’s likelihood to win its given race, we should have enough data points to provide a good probability model fitting a binomial distribution, since we are just measuring the win/loss (two-outcome) event per race.  With over 22,500 datasets based on daily events, each file contains an average of four events, meaning that our dataset for this probability model will have about 90,000 data points.  Although we have a large number of data points, a simple binomial distribution curve may be the best way to visualize this data.  Since our hypothesis is meant to provide insight into our big question of  ‘how to increase payouts from horse racing bets’, the normalized probability distribution should be directly proportional to the payout odds.  This same methodology would address our additional hypothesis in which we wish to see if we receive a better payout by betting on a horse favored in second to the top favored horse.</p>
