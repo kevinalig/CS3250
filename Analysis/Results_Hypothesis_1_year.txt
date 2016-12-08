@@ -1,0 +1,4 @@
+This is the probabilities that the most favored horse will win a race,
+for each year, from 2009 to 2016
+
+0.4785225 0.4746410 0.4797154 0.4416713 0.4272846 0.4571789 0.4559181 0.4529975
