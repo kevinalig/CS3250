@@ -28,11 +28,11 @@ while(iteration < 10441) {
         horse <- horse[sample(1:nrow(horse), 1)] # If there are horses with the same maximum BSP
       }
       
-      if(!any(check$WIN_LOSE == 1)) {
+      if(any(check$WIN_LOSE == 1)) {
         temp.money <- temp.money - 1
-      }
-      else if((horse$WIN_LOSE == 1) && !is.null(horse)){ # Problem: 100005932
-        temp.money <- temp.money + horse$BSP - 1
+        if((horse$WIN_LOSE == 1) && !is.null(horse)){ # Problem: 100005932
+          temp.money <- temp.money + horse$BSP
+        }
       }
     } 
   }
