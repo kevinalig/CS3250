@@ -120,7 +120,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
-                <img src="./img/csvScreenCap.PNG">
+                <img src="./img/csvScreenCap3.png" width="550" >
                 <h2>Data</h2>
                 <p>Datasets for this study were obtained from the biggest betting exchange worldwide: Betfair (TheGuardian.com).  Betfair started its operations in 2000, with a steady growth that allowed the purchasing of England’s biggest horseracing publishing company, Timeform, in 2006. In 2009, Betfair purchased the TVG Network in the United States, which allowed for Betfair to offer wagering services in 31 of the States. Betfair also reached a deal in 2009 with the New York Racing Association, which allowed for Betfair to offer wagering and exchanges on Aqueduct’s thoroughbreeding races (ThoroughbredTimes.com).  More recently in 2015, Betfair merged with the biggest bookmaker in Ireland, Paddy Power, which cemented Betfair as the biggest betting exchange operating across the globe.  Although public access to archived data only extends back to 2007, the dataset Betfair holds on sport gamblings far surpass those offered by any other research firm or corporate entity such as ESPN.  Therefore, our datasets for this research topic are exclusively gathered from Betfair.</p>
                 <p>Betfair offers an up-to-the-minute database via their API.  However, this requires an active account.  For our purposes, we require historical data rather than the latest data.  Betfair provides previous days’ racing data freely through its public website at the following link: https://promo.betfair.com/betfairsp/prices/index.php.  These .csv files date back to 2007 with data from horse racing in multiple countries, to include the United Kingdom, Ireland, Australia, the United States of America, and South Africa.  Collecting the off of their server was a trivial task with web-browser plug-in tools such as “DownloadThemAll”, which scrapes a server and downloads all dependent files from a public site.</p>
@@ -146,12 +146,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Methodology</h2>
-                    <p>In thanks to the same attributes being present across all of the files, merging the files is also a trivial process.  In Windows, the command line shell allows for a simple argument of “[directory] copy *.csv mergedFileName.csv” (AnalystCave.com).  A Python script would require a File I/O function which itself would still be trivial (fout, for loop, write).</p>
-                    <p>We have over 22,500 data sets gathered from Betfair, with an average of 120 rows of data per set.  The datasets offered by Betfair gives us two minor hurdles.  Their horseracing data mixes in their dog racing data.  Fortunately, greyhound race results are aptly named ‘greyhound’ as part of their filename and can easily be sorted out. The second issue comes in the form of poorly kept records; some races do not have betting data included.  Without the starting wagers, we do not have a way in which to calculate odds and favors.  Some datasets also exclude the list of winners and losers, which also hinders us from calculating final payouts based on wins.  Therefore, whenever we complete our data analysis in R, we will need to exclude entire ‘Event ID’ sets that do not have either a complete set of betting data or winners.</p>
-                    <p>In order to answer our hypotheses regarding an overall favored horse’s likelihood to win its given race, we should have enough data points to provide a good probability model fitting a binomial distribution, since we are just measuring the win/loss (two-outcome) event per race.  With over 22,500 datasets based on daily events, each file contains an average of four events, meaning that our dataset for this probability model will have about 90,000 data points.  Although we have a large number of data points, a simple binomial distribution curve may be the best way to visualize this data.  Since our hypothesis is meant to provide insight into our big question of  ‘how to increase payouts from horse racing bets’, the normalized probability distribution should be directly proportional to the payout odds.  This same methodology would address our additional hypothesis in which we wish to see if we receive a better payout by betting on a horse favored in second to the top favored horse.</p>
-                    <p>In order to analyze the data in regards to our first hypothesis, we want to focus on the favored horses. We will record how many times a horse with the highest total wager placed won or lost, and to compare those two results. This would not only give us an analysis on win/loss ratio, but it also shows how often a favored horse performs well on the racetrack. That in turn determines if that popular favorite should truly be voted on or not in order to maximize a good betting return.</p>
-                    <p>We also want to know if placing a wager on a lower ranked horse increases our payout chances. We postulate that earnings from a lower-ranked wager can overcome money sunk into a loss.   A horse is lower ranked than the highest if it receives a lower average wager, which is an attribute provided in our datasets. The dataset also has information regarding the final amount that was wagered before the race began. To make an analysis, we  just need to compare the amount that was won or lost, and sum up all of these up over a specific time interval. If the result is positive, then all of the wagers were worth paying for at the end of the time frame.</p>
-                    <p>To address our third hypothesis on a ‘window of odds’, we will need to create an artificial bracket of odds.  For example, a horse favored 1-1 to 5-1 are all grouped in the same bracket, then 6-1 to 10-1 are grouped in a different bracket, and so on and so forth.  This creates a sliding bracket (window) of odds.  Then in R, we can compare how many horses won per each window, with an accompanying bar graph for each betting window.  We will then create a correlated graph showing the payout for each bracket according to their winning probabilities.  This can be a dynamic graph that is generated in Tableau so that the user can switch between each graph (Tableau.com), overlay the graphs, or generate their own brackets and graphs using our data (as opposed to viewing our pre-made graphs).</p>
+                    <p>All of the data came from multiple files with varying cryptic names. So we first had to sort through and sift out all of the data files that we did not actually need. Betfair had data about greyhounds in particular that we decided to ignore. Then, in order to make it easier for the computer to process the files. We removed the file's names and replaced them with a more iterator style format for the computer to iterate through.</p>
+                    <p>In the end, we had about 10,500 data sets gathered from Betfair for us to use in R, with an average of 120 rows of data per set. Some of the race events did not have betting data included, so those had to be skipped over. But then, our data processing could begin.</p>
+                    <p>First, for each event contained, we split the horses into 10 groups. The first group was defined by horses having a betting wager of $1 to $2, then the next group had a betting wager of $2 to $4, and each group was defined by the wagers increasing by a power of 2, up to $512 to $1024. Then we took a single horse from each group randomly.</p>
+                    <p>Then we checked if each horse won or lost that race. If there was a group not represented in that race, we just skipped it. Going through the data in this way, we saw that the win percentage for each group dropped as the wager price for the group increased.</p>
+                    <p>With these percentages, the data suggests that the horses with the lowest betting wager win more often. But that does not mean that more money is gained from betting on those horses, because the payout from them is smaller. So, in those wager groups again, we began a simulation where there are 10 groups of people each starting with $10,000. Each person would only bet on horses in a specific wager group. If a horse was present in their group, they would bet $1 on one of those horses. If they won, they would get their payout. After each day, we would gather the end amount of money that they had, and stored it, and then moved on with the next day, the groups maintaining their winnings (or losses) throughout the simulation. The result was that the lowest betting wagered horses actually did not gain money, but was slowly on the decline. The horses with a higher wager performed better for their betters.</p>
+
             </div>
         </div>
     </section>
@@ -162,7 +162,42 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2>Conclusions</h2>
-                <p>[Please check back at the end of the term.]</p>
+                <h3>Hypothesis 1: Is a favored horse less likely to win, thereby providing less of a payout?</h3>
+                <p>Here is the result of probabiliteis that the most favored horse would win a race from our simulation:</p>
+                <p>2009: 47.9% win<br>
+                    2010: 47.5% win<br>
+                    2011: 48.0% win<br>
+                    2012: 44.2% win<br>
+                    2013: 42.7% win<br>
+                    2014: 45.6% win<br>
+                    2015: 46.0% win<br>
+                    2016: 45.3%win</p>  
+                <p>Top 1 to 2 horses:  60.9% win<br>
+                    Top 2 - 4 horses: 33.4% win<br>
+                    Top 4 - 8 horses: 17.5% win<br>
+                    Top 8 - 16 horses: 9.0% win<br>
+                    Top 16 - 32 horses: 4.7% win<br>
+                    Top 32 - 64 horses: 2.3% win<br>
+                    Top 64 - 128 horses: 1.1% win<br>
+                    Top 128 - 256 horses: 0.6% win<br>
+                    Top 256 - 512 horses: 0.3% win<br>
+                    Top 512 - 1024 horses: 0.2% win</p>
+                <h3>Hypothesis 2:  Betting on ‘lower odds’ (less favored) horses will provide a higher payout.</h3>
+                <p>Assuming the data set is complete, that is that all horses that competed, regardless of odds, is included and that the data is correct: placing a $1 wager everytime the LONG shot horse, with odds greater than 512 to 1, would result in the largest net winnings.</p>
+                <h3>Hypothesis 3: Is there a window of odds where the payout is greater?  In other words, rather than betting on a single horse, can we increase our chances of a higher payout by betting on a set of horses that sit in a range of favors?</h3>
+                <h3>Result set data graphs</h3>
+                <!--<p><iframe width="900" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~19a07ba7/1.embed"></iframe></p>-->
+                <p><img src="./img/hyp3/Odds_1_2.jpeg"><br>
+                    <img src="./img/hyp3/Odds_2_4.jpeg"><br>
+                    <img src="./img/hyp3/Odds_4_8.jpeg"><br>
+                    <img src="./img/hyp3/Odds_8_16.jpeg"><br>
+                    <img src="./img/hyp3/Odds_16_32.jpeg"><br>
+                    <img src="./img/hyp3/Odds_32_64.jpeg"><br>
+                    <img src="./img/hyp3/Odds_64_128.jpeg"><br>
+                    <img src="./img/hyp3/Odds_128_256.jpeg"><br>
+                    <img src="./img/hyp3/Odds_256_512.jpeg"><br>
+                    <img src="./img/hyp3/Odds_512_1024.jpeg"><br>
+                </p>
             </div>
         </div>
     </section>
